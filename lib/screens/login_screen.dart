@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meetup_sample/actions/login_actions.dart';
+import 'package:meetup_sample/widgets/custom_button.dart';
 
 class LoginScreen extends StatefulWidget {
 
@@ -31,20 +32,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 inputType: TextInputType.emailAddress),
             _buildTextField('Password', _passwordController, isPassword: true),
             new SizedBox(height: 10.0),
-            _buildMaterialButton(onPressed: () => _onLoginButtonClick(context)),
+            new CustomButton(
+              text: 'Login',
+              onPressed: () => _onLoginButtonClick(context),
+            ),
           ],
         ),
       ),
       key: _scaffoldKey,
-    );
-  }
-
-  Widget _buildMaterialButton({VoidCallback onPressed}) {
-    return new MaterialButton(
-      child: new Text("Login"),
-      onPressed: onPressed,
-      color: Colors.blue,
-      textColor: Colors.white,
     );
   }
 
