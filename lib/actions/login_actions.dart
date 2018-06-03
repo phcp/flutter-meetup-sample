@@ -2,7 +2,7 @@
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginService {
+class LoginActions {
 
   static final String loggedUserPref = 'loggedUser';
 
@@ -11,10 +11,17 @@ class LoginService {
     return prefs.getString(loggedUserPref)?.isNotEmpty ?? false;
   }
 
-  static Future<String> performLogin(String login, String password) async {
+  static Future<String> performLogin(String email, String password) async {
+    if(email.isEmpty || password.isEmpty) {
+      throw 'E-mail and password are required.';
+    }
+
+    String loggedUser = '$email:$password';
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(loggedUserPref, '$login:$password');
-    return login;
+    prefs.setString(loggedUserPref, loggedUser);
+
+    return loggedUser;
   }
 
   static Future performLogout() async {

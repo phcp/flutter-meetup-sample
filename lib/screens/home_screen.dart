@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _redirectToLoginIfNeeded() async {
-    var isLoggedIn = await LoginService.isLoggedIn();
+    var isLoggedIn = await LoginActions.isLoggedIn();
 
     if(!isLoggedIn) {
       Navigator.pushNamed(context, LoginScreen.route);
@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: new FloatingActionButton(
-        onPressed: () => {},
+        onPressed: () => LoginActions.performLogout(),
         tooltip: 'Increment',
         child: new Icon(Icons.add),
       ),
