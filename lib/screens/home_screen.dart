@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:meetup_sample/actions//login_actions.dart';
+import 'package:meetup_sample/actions/request_actions.dart';
+import 'package:meetup_sample/models/item.dart';
 import 'package:meetup_sample/screens/login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,38 +20,47 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  List<Item> _items;
+
   @override
   void initState() {
     super.initState();
 
-    _redirectToLoginIfNeeded();
+    _setupInitialState();
   }
 
-  void _redirectToLoginIfNeeded() async {
+  void _setupInitialState() async {
     var isLoggedIn = await LoginActions.isLoggedIn();
 
     if(!isLoggedIn) {
       Navigator.pushNamed(context, LoginScreen.route);
     }
+    else {
+      var items = await RequestActions.fetchItems();
+
+      setState(() {
+        _items = items;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    var listTiles = new List<Widget>();
+
+    if(_items?.isNotEmpty ?? false) {
+      listTiles = _items.map(
+        (item) => new ListTile(
+          title: new Text(item.name), 
+          subtitle: new Text(item.id.toString()),
+        )
+      ).toList();
+    }
+
     return new Scaffold(
       appBar: _buildAppBar(),
-      body: new Center(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Text(
-              'You have pushed the button this many times:',
-            ),
-            new Text(
-              'a',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
+      body: new ListView(
+        children: listTiles,
       ),
       floatingActionButton: new FloatingActionButton(
         onPressed: () => {},
