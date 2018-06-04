@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meetup_sample/actions/login_actions.dart';
 import 'package:meetup_sample/widgets/custom_button.dart';
+import 'package:meetup_sample/widgets/custom_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
 
@@ -13,8 +14,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  final GlobalKey _scaffoldKey = new GlobalKey();
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   final TextEditingController _emailController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
 
@@ -28,9 +28,16 @@ class _LoginScreenState extends State<LoginScreen> {
             new SizedBox(height: 50.0),
             _buildLogo(),
             new SizedBox(height: 30.0),
-            _buildTextField('E-mail', _emailController,
-                inputType: TextInputType.emailAddress),
-            _buildTextField('Password', _passwordController, isPassword: true),
+            new CustomTextField(
+                label: 'E-mail',
+                controller: _emailController,
+                inputType: TextInputType.emailAddress
+            ),
+            new CustomTextField(
+              label: 'Password',
+              controller: _passwordController,
+              isPassword: true
+            ),
             new SizedBox(height: 10.0),
             new CustomButton(
               text: 'Login',
@@ -52,23 +59,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController textController,
-      {bool isPassword = false, TextInputType inputType = TextInputType.text}) {
-
-    return new Padding(
-      padding: new EdgeInsets.symmetric(vertical: 10.0),
-      child: new TextField(
-        autofocus: true,
-        controller: textController,
-        decoration: InputDecoration(
-          labelText: label,
-        ),
-        obscureText: isPassword,
-        keyboardType: inputType,
-      ),
-    );
-  }
-
   void _onLoginButtonClick(BuildContext context) async {
     try {
       var user = await LoginActions.performLogin(
@@ -85,15 +75,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _loginFailed(BuildContext context, String error) {
-    if(_scaffoldKey.currentState is ScaffoldState) {
-      final snackBar = new SnackBar(
-        content: new Text(error),
-        backgroundColor: Colors.redAccent,
-      );
-      ScaffoldState scaffoldState = _scaffoldKey.currentState;
+    final snackBar = new SnackBar(
+      content: new Text(error),
+      backgroundColor: Colors.redAccent,
+    );
 
-      scaffoldState.showSnackBar(snackBar);
-    }
+    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
 }

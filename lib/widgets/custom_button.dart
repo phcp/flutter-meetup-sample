@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomButton extends Widget {
+class CustomButton extends StatelessWidget {
 
   const CustomButton({
     Key key,
@@ -16,13 +16,13 @@ class CustomButton extends Widget {
   final VoidCallback onPressed;
 
   @override
-  Element createElement() {
+  Widget build(BuildContext context) {
     return new MaterialButton(
       child: new Text(text),
       onPressed: onPressed,
       color: this.color,
       textColor: this.textColor,
-    ).createElement();
+    );
   }
 
 }

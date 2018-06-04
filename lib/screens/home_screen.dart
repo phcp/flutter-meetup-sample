@@ -34,9 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
-      ),
+      appBar: _buildAppBar(),
       body: new Center(
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -52,10 +50,27 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: new FloatingActionButton(
-        onPressed: () => LoginActions.performLogout(),
+        onPressed: () => {},
         tooltip: 'Increment',
         child: new Icon(Icons.add),
       ),
     );
+  }
+
+  AppBar _buildAppBar() {
+    return new AppBar(
+      title: new Text(widget.title),
+      actions: <Widget>[
+        new IconButton(
+            icon: new Icon(Icons.exit_to_app),
+            onPressed: _onLogoutButtonClicked,
+        )
+      ],
+    );
+  }
+
+  void _onLogoutButtonClicked() async {
+    await LoginActions.performLogout();
+    Navigator.pushNamed(context, LoginScreen.route);
   }
 }
