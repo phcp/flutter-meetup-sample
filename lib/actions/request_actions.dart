@@ -6,11 +6,11 @@ import 'package:meetup_sample/models/item.dart';
 class RequestActions {
 
   static Future<List<Item>> fetchItems() async {
-    var response = await get('https://7cb4568b-c607-4743-821a-f64b8e2608d3.mock.pstmn.io/get-items');
+    var response = await get('https://7cd67769-7891-463b-96e5-8026538f7ae8.mock.pstmn.io/get-items');
 
-    var itemsJson = json.decode(response.body);
+    var items = json.decode(response.body) as List;
 
-    return (itemsJson as List).map((item) => new Item.fromJson(item)).toList();
+    return items.map((item) => new Item.fromJson(item)).toList();
   }
 
 }

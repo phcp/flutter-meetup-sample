@@ -1,17 +1,16 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:meetup_sample/actions//login_actions.dart';
 import 'package:meetup_sample/actions/request_actions.dart';
 import 'package:meetup_sample/models/item.dart';
+import 'package:meetup_sample/screens/add_item_screen.dart';
 import 'package:meetup_sample/screens/login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
 
   HomeScreen({Key key}) : super(key: key);
 
-  static const String route = "/home";
-  final String title = "Liferay Meetup";
+  static const String route = '/home';
+  final String title = 'Liferay Meetup';
 
   @override
   _HomeScreenState createState() => new _HomeScreenState();
@@ -63,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: listTiles,
       ),
       floatingActionButton: new FloatingActionButton(
-        onPressed: () => {},
+        onPressed: _onFabPressed,
         tooltip: 'Increment',
         child: new Icon(Icons.add),
       ),
@@ -76,13 +75,30 @@ class _HomeScreenState extends State<HomeScreen> {
       actions: <Widget>[
         new IconButton(
             icon: new Icon(Icons.exit_to_app),
-            onPressed: _onLogoutButtonClicked,
+            onPressed: _onLogoutButtonPressed,
         )
       ],
     );
   }
 
-  void _onLogoutButtonClicked() async {
+  void _onFabPressed() async {
+    var newItemId = _items.length + 1;
+
+    final Item newItem = await Navigator.push(
+      context,
+      new MaterialPageRoute(
+          builder: (builder) => new AddItemScreen(nextItemId: newItemId)
+      )
+    );
+
+    if(newItem != null) {
+      setState(() {
+        _items.add(newItem);
+      });
+    }
+  }
+
+  void _onLogoutButtonPressed() async {
     await LoginActions.performLogout();
     Navigator.pushNamed(context, LoginScreen.route);
   }
