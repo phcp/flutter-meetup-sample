@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: new FloatingActionButton(
         onPressed: _onFabPressed,
-        tooltip: 'Increment',
+        tooltip: 'Add Item',
         child: new Icon(Icons.add),
       ),
     );
