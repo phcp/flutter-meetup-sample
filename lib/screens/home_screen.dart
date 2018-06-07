@@ -4,6 +4,7 @@ import 'package:meetup_sample/actions/request_actions.dart';
 import 'package:meetup_sample/models/item.dart';
 import 'package:meetup_sample/screens/add_item_screen.dart';
 import 'package:meetup_sample/screens/login_screen.dart';
+import 'package:meetup_sample/widgets/custom_button.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -74,14 +75,48 @@ class _HomeScreenState extends State<HomeScreen> {
     var listTiles = new List<Widget>();
 
     if(_items?.isNotEmpty ?? false) {
-      listTiles = _items.map(
-              (item) => new ListTile(
+      listTiles = _items
+          .map((item) => new ListTile(
             title: new Text(item.name),
             subtitle: new Text(item.id.toString()),
-          )
+            onTap: () => _onTilePressed(item),
+        ),
       ).toList();
     }
     return listTiles;
+  }
+
+  void _onTilePressed(Item item) {
+    showDialog(
+      context: context,
+      builder: (builder) {
+        return new AlertDialog(
+          title: new Text('Tem certeza que deseja remover ${item.name}?'),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text('Cancelar'),
+              onPressed: _onCancelDialog,
+            ),
+            new FlatButton(
+              child: new Text('Remover'),
+              onPressed: () => _onRemoveItem(item),
+            ),
+          ],
+        );
+      }
+    );
+  }
+
+  void _onCancelDialog() {
+    Navigator.of(context).pop();
+  }
+
+  void _onRemoveItem(Item item) {
+    setState(() {
+      _items.remove(item);
+    });
+
+    Navigator.of(context).pop();
   }
 
   void _onFabPressed() async {
