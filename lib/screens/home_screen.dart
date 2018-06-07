@@ -45,21 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var listTiles = new List<Widget>();
-
-    if(_items?.isNotEmpty ?? false) {
-      listTiles = _items.map(
-        (item) => new ListTile(
-          title: new Text(item.name), 
-          subtitle: new Text(item.id.toString()),
-        )
-      ).toList();
-    }
-
     return new Scaffold(
       appBar: _buildAppBar(),
       body: new ListView(
-        children: listTiles,
+        children: _buildListTiles(),
       ),
       floatingActionButton: new FloatingActionButton(
         onPressed: _onFabPressed,
@@ -76,9 +65,23 @@ class _HomeScreenState extends State<HomeScreen> {
         new IconButton(
             icon: new Icon(Icons.exit_to_app),
             onPressed: _onLogoutButtonPressed,
-        )
+        ),
       ],
     );
+  }
+
+  List<Widget> _buildListTiles() {
+    var listTiles = new List<Widget>();
+
+    if(_items?.isNotEmpty ?? false) {
+      listTiles = _items.map(
+              (item) => new ListTile(
+            title: new Text(item.name),
+            subtitle: new Text(item.id.toString()),
+          )
+      ).toList();
+    }
+    return listTiles;
   }
 
   void _onFabPressed() async {
@@ -88,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
       context,
       new MaterialPageRoute(
           builder: (builder) => new AddItemScreen(nextItemId: newItemId)
-      )
+      ),
     );
 
     if(newItem != null) {

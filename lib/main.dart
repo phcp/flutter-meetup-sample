@@ -22,4 +22,3 @@ class MeetupApp extends StatelessWidget {
   }
 
 }
-
