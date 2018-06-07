@@ -20,33 +20,35 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new SingleChildScrollView(
-        padding: new EdgeInsets.all(10.0),
-        child: new Column(
-          children: <Widget>[
-            new SizedBox(height: 50.0),
-            _buildLogo(),
-            new SizedBox(height: 30.0),
-            new CustomTextField(
-                label: 'E-mail',
-                controller: _emailController,
-                inputType: TextInputType.emailAddress
-            ),
-            new CustomTextField(
-              label: 'Password',
-              controller: _passwordController,
-              isPassword: true
-            ),
-            new SizedBox(height: 10.0),
-            new CustomButton(
-              text: 'Login',
-              onPressed: () => _onLoginButtonClick(context),
-            ),
-          ],
+    return new SafeArea(
+      child: new Scaffold(
+        body: new SingleChildScrollView(
+          padding: new EdgeInsets.all(10.0),
+          child: new Column(
+            children: <Widget>[
+              new SizedBox(height: 50.0),
+              _buildLogo(),
+              new SizedBox(height: 30.0),
+              new CustomTextField(
+                  label: 'E-mail',
+                  controller: _emailController,
+                  inputType: TextInputType.emailAddress
+              ),
+              new CustomTextField(
+                  label: 'Password',
+                  controller: _passwordController,
+                  isPassword: true
+              ),
+              new SizedBox(height: 10.0),
+              new CustomButton(
+                text: 'Login',
+                onPressed: () => _onLoginButtonClick(context),
+              ),
+            ],
+          ),
         ),
+        key: _scaffoldKey,
       ),
-      key: _scaffoldKey,
     );
   }
 
